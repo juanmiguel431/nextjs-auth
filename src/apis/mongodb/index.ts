@@ -5,7 +5,7 @@ import {
   InsertOneResult,
   MongoClient,
   OptionalUnlessRequiredId,
-  ServerApiVersion, WithId, Document
+  ServerApiVersion, WithId, Document, UpdateFilter, UpdateOptions, UpdateResult
 } from 'mongodb';
 
 export default class MongoDbClient<T extends Document = any> {
@@ -39,12 +39,20 @@ export default class MongoDbClient<T extends Document = any> {
     return this.collection.insertOne(item);
   }
 
+  public async update(filter: Filter<T>, update: UpdateFilter<T> | Partial<T>, options?: UpdateOptions): Promise<UpdateResult<T>>{
+    return this.collection.updateOne(filter, update, options);
+  }
+
   public async insertMany(items: OptionalUnlessRequiredId<T>[]): Promise<InsertManyResult<T>> {
     return this.collection.insertMany(items);
   }
 
   public async find(filter: Filter<T>, options?: FindOptions): Promise<FindCursor<WithId<T>>> {
     return this.collection.find(filter, options);
+  }
+
+  public async findOne(filter: Filter<T>, options?: FindOptions): Promise<FindCursor<WithId<T>> | null> {
+    return this.collection.findOne(filter, options);
   }
 
   public async findAll(): Promise<FindCursor<WithId<T>>> {

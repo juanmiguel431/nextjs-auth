@@ -1,4 +1,4 @@
-import NextAuth, { NextAuthOptions } from "next-auth"
+import NextAuth, {NextAuthOptions} from "next-auth"
 // import GoogleProvider from "next-auth/providers/google"
 // import FacebookProvider from "next-auth/providers/facebook"
 // import GithubProvider from "next-auth/providers/github"
@@ -6,10 +6,12 @@ import NextAuth, { NextAuthOptions } from "next-auth"
 // import Auth0Provider from "next-auth/providers/auth0"
 // import AppleProvider from "next-auth/providers/apple"
 // import EmailProvider from "next-auth/providers/email"
-import CredentialsProvider  from 'next-auth/providers/credentials';
+import CredentialsProvider from 'next-auth/providers/credentials';
 
-import { verifyPassword } from '@/lib/auth';
-import { connectToDatabase } from '@/lib/db';
+import {verifyPassword} from '@/lib/auth';
+import MongoDbClient from "@/apis/mongodb";
+import {MongoServerError} from "mongodb";
+import {User} from "next-auth/src/core/types";
 
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
@@ -66,9 +68,9 @@ export const authOptions: NextAuthOptions = {
       // e.g. domain, username, password, 2FA token, etc.
       // You can pass any HTML attribute to the <input> tag through the object.
       credentials: {
-        username: { label: "Username", type: "text", placeholder: "jsmith" },
-        password: { label: "Password", type: "password" },
-        email: { label: "Email", type: "text" }
+        username: {label: "Username", type: "text", placeholder: "jsmith"},
+        password: {label: "Password", type: "password"},
+        email: {label: "Email", type: "text"}
       },
       async authorize(credentials, req) {
         // You need to provide your own logic here that takes the credentials
@@ -91,29 +93,36 @@ export const authOptions: NextAuthOptions = {
         // Return null if user data could not be retrieved
         //             return null
 
-        if (!credentials){
+        if (!credentials) {
           return null;
         }
 
-        const client = await connectToDatabase();
-        const usersCollection = client.db().collection('users');
-        const user = await usersCollection.findOne({email: credentials.email,});
+        const client = new MongoDbClient<User>('users');
+        try {
+          await client.connect();
+          const user: any = await client.findOne({email: credentials.email});
 
-        if (!user) {
+          if (!user) {
+            return null;
+          }
+
+          const isValid = await verifyPassword(credentials.password, user.password);
+
+          if (!isValid) {
+            return null;
+          }
+
+          return {email: user.email, username: user.email, password: user.password, id: user._id};
+
+        } catch (error) {
+          if (error instanceof MongoServerError) {
+            console.log(`Error worth logging: ${error}`);
+          }
+
+          return null;
+        } finally {
           await client.close();
-          throw new Error('No user found!');
         }
-
-        const isValid = await verifyPassword(credentials.password, user.password);
-
-        if (!isValid) {
-          await client.close();
-          throw new Error('Could not log you in!');
-        }
-
-        await client.close();
-
-        return { email: user.email, username: user.email, password: user.password, id: '1' };
       }
     })
   ],
@@ -121,7 +130,7 @@ export const authOptions: NextAuthOptions = {
     colorScheme: "light",
   },
   callbacks: {
-    async jwt({ token }) {
+    async jwt({token}) {
       token.userRole = "admin"
       return token
     },
