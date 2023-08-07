@@ -14,7 +14,7 @@ export default class MongoDbClient<T extends Document = any> {
   private client: MongoClient;
 
   constructor(collection: string) {
-    const connectionString = `mongodb+srv://${process.env.mongodb_username}:${process.env.mongodb_password}@${process.env.mongodb_cluster}.mongodb.net/?retryWrites=true&w=majority`;
+    const connectionString = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_CLUSTER}.mongodb.net/?retryWrites=true&w=majority`;
     this.client = new MongoClient(connectionString, {
       serverApi: {
         version: ServerApiVersion.v1,
@@ -23,7 +23,7 @@ export default class MongoDbClient<T extends Document = any> {
       }
     });
 
-    this.db = this.client.db(process.env.mongodb_database);
+    this.db = this.client.db(process.env.MONGODB_DATABASE);
     this.collection = this.db.collection(collection);
   }
 

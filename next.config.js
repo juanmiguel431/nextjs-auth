@@ -9,10 +9,10 @@ const nextConfig = (phase) => {
         return {
             reactStrictMode: true,
             env: {
-                'mongodb_username': 'juanmiguel431',
-                'mongodb_password': 'hMasqJdJALJF4uns',
-                'mongodb_cluster': 'cluster0.3polqrh',
-                'mongodb_database': 'next-events-dev',
+                'MONGODB_USERNAME': 'juanmiguel431',
+                'MONGODB_PASSWORD': 'hMasqJdJALJF4uns',
+                'MONGODB_CLUSTER': 'cluster0.3polqrh',
+                'MONGODB_DATABASE': 'next-authentication-dev',
             }
         };
     }
@@ -20,10 +20,10 @@ const nextConfig = (phase) => {
     return {
         reactStrictMode: true,
         env: {
-            'mongodb_username': 'juanmiguel431',
-            'mongodb_password': 'hMasqJdJALJF4uns',
-            'mongodb_cluster': 'cluster0.3polqrh',
-            'mongodb_database': 'next-events',
+            'MONGODB_USERNAME': 'juanmiguel431',
+            'MONGODB_PASSWORD': 'hMasqJdJALJF4uns',
+            'MONGODB_CLUSTER': 'cluster0.3polqrh',
+            'MONGODB_DATABASE': 'next-authentication',
         }
     };
 }
