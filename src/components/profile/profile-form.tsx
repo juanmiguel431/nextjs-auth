@@ -1,16 +1,20 @@
-import { useRef } from 'react';
-
+import React, { useRef } from 'react';
 import classes from './profile-form.module.css';
+import {PasswordChangeModel} from "@/models";
 
-function ProfileForm(props) {
-  const oldPasswordRef = useRef();
-  const newPasswordRef = useRef();
+interface ProfileFormProps {
+  onChangePassword: (model: PasswordChangeModel) => void;
+}
 
-  function submitHandler(event) {
+const ProfileForm: React.FC<ProfileFormProps> = (props) => {
+  const oldPasswordRef = useRef<HTMLInputElement>(null);
+  const newPasswordRef = useRef<HTMLInputElement>(null);
+
+  const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const enteredOldPassword = oldPasswordRef.current.value;
-    const enteredNewPassword = newPasswordRef.current.value;
+    const enteredOldPassword = oldPasswordRef.current?.value || '';
+    const enteredNewPassword = newPasswordRef.current?.value || '';
 
     // optional: Add validation
 
@@ -21,7 +25,7 @@ function ProfileForm(props) {
   }
 
   return (
-    <form className={classes.form} onSubmit={submitHandler}>
+    <form className={classes.form} onSubmit={e => submitHandler}>
       <div className={classes.control}>
         <label htmlFor='new-password'>New Password</label>
         <input type='password' id='new-password' ref={newPasswordRef} />

@@ -1,12 +1,12 @@
+import {GetServerSideProps, NextPage} from "next";
 import { getSession } from 'next-auth/react';
-
 import UserProfile from '../components/profile/user-profile';
 
-function ProfilePage() {
+const ProfilePage: NextPage = () => {
   return <UserProfile />;
 }
 
-export async function getServerSideProps(context) {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession({ req: context.req });
 
   if (!session) {

@@ -1,7 +1,9 @@
 import ProfileForm from './profile-form';
 import classes from './user-profile.module.css';
+import React from "react";
+import {PasswordChangeModel} from "@/models";
 
-function UserProfile() {
+const UserProfile: React.FC = () => {
   // const [isLoading, setIsLoading] = useState(true);
 
   // useEffect(() => {
@@ -18,7 +20,7 @@ function UserProfile() {
   //   return <p className={classes.profile}>Loading...</p>;
   // }
 
-  async function changePasswordHandler(passwordData) {
+  async function changePasswordHandler(passwordData: PasswordChangeModel) {
     const response = await fetch('/api/user/change-password', {
       method: 'PATCH',
       body: JSON.stringify(passwordData),

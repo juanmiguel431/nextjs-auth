@@ -1,9 +1,9 @@
+import React from "react";
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
-
 import classes from './main-navigation.module.css';
 
-function MainNavigation() {
+const MainNavigation: React.FC = () => {
   const {data: session, status} = useSession();
   const loading = status === "loading"
 

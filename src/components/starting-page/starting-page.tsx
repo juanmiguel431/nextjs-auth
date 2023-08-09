@@ -1,6 +1,7 @@
+import React from "react";
 import classes from './starting-page.module.css';
 
-function StartingPageContent() {
+const StartingPageContent: React.FC = () => {
   // Show Link to Login page if NOT auth
 
   return (

@@ -1,6 +1,7 @@
+import {NextPage} from "next";
 import StartingPageContent from '../components/starting-page/starting-page';
 
-function HomePage() {
+const HomePage: NextPage = () => {
   return <StartingPageContent />;
 }
 

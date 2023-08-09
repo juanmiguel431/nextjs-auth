@@ -1,8 +1,8 @@
-import { Fragment } from 'react';
+import React, {Fragment, PropsWithChildren} from 'react';
 
 import MainNavigation from './main-navigation';
 
-function Layout(props) {
+const Layout: React.FC<PropsWithChildren> = (props) => {
   return (
     <Fragment>
       <MainNavigation />
