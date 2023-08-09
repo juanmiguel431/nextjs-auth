@@ -12,7 +12,7 @@ const nextConfig = (phase) => {
                 'MONGODB_USERNAME': 'juanmiguel431',
                 'MONGODB_PASSWORD': 'hMasqJdJALJF4uns',
                 'MONGODB_CLUSTER': 'cluster0.3polqrh',
-                'MONGODB_DATABASE': 'next-authentication-dev',
+                'MONGODB_DATABASE': 'next-auth-dev',
             }
         };
     }
@@ -23,7 +23,7 @@ const nextConfig = (phase) => {
             'MONGODB_USERNAME': 'juanmiguel431',
             'MONGODB_PASSWORD': 'hMasqJdJALJF4uns',
             'MONGODB_CLUSTER': 'cluster0.3polqrh',
-            'MONGODB_DATABASE': 'next-authentication',
+            'MONGODB_DATABASE': 'next-auth',
         }
     };
 }
