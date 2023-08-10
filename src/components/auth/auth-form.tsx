@@ -1,13 +1,13 @@
-import React, { useState, useRef } from 'react';
-import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/router';
+import React, {useState, useRef} from 'react';
+import {signIn} from 'next-auth/react';
+import {useRouter} from 'next/router';
 
 import classes from './auth-form.module.css';
 
 async function createUser(email: string, password: string) {
   const response = await fetch('/api/auth/signup', {
     method: 'POST',
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({email, password}),
     headers: {
       'Content-Type': 'application/json',
     },
@@ -25,6 +25,7 @@ async function createUser(email: string, password: string) {
 const AuthForm: React.FC = () => {
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [isLogin, setIsLogin] = useState(true);
   const router = useRouter();
@@ -34,6 +35,7 @@ const AuthForm: React.FC = () => {
   }
 
   async function submitHandler(event: React.FormEvent<HTMLFormElement>) {
+    setIsLoading(true);
     event.preventDefault();
 
     const enteredEmail = emailInputRef.current?.value || '';
@@ -60,15 +62,16 @@ const AuthForm: React.FC = () => {
         console.log(error);
       }
     }
+    setIsLoading(false);
   }
 
   return (
-    <section className={classes.auth}>
+    <section className={classes.auth} style={{backgroundColor: isLogin ? '#38015c' : '#159404'}}>
       <h1>{isLogin ? 'Login' : 'Sign Up'}</h1>
       <form onSubmit={submitHandler}>
         <div className={classes.control}>
           <label htmlFor='email'>Your Email</label>
-          <input type='email' id='email' required ref={emailInputRef} />
+          <input type='email' id='email' required ref={emailInputRef}/>
         </div>
         <div className={classes.control}>
           <label htmlFor='password'>Your Password</label>
@@ -83,6 +86,7 @@ const AuthForm: React.FC = () => {
           <button>{isLogin ? 'Login' : 'Create Account'}</button>
           <button
             type='button'
+            style={{color: '#ffffff'}}
             className={classes.toggle}
             onClick={switchAuthModeHandler}
           >
@@ -90,6 +94,7 @@ const AuthForm: React.FC = () => {
           </button>
         </div>
       </form>
+      {isLoading && 'Loading'}
     </section>
   );
 }
