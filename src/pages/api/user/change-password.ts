@@ -1,16 +1,16 @@
-import { getSession } from 'next-auth/react';
-
+import {getServerSession} from "next-auth";
 import { hashPassword, verifyPassword } from '@/lib/auth';
 import MongoDbClient from "../../../apis/mongodb";
 import {MongoServerError} from "mongodb";
 import {NextApiRequest, NextApiResponse} from "next";
+import {authOptions} from "@/pages/api/auth/[...nextauth]";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'PATCH') {
     return;
   }
 
-  const session = await getSession({ req: req });
+  const session = await getServerSession(req, res, authOptions);
 
   if (!session) {
     res.status(401).json({ message: 'Not authenticated!' });

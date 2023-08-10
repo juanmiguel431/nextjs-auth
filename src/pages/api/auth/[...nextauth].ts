@@ -17,6 +17,7 @@ import {User} from "next-auth/src/core/types";
 // https://next-auth.js.org/configuration/options
 
 export const authOptions: NextAuthOptions = {
+  secret: "YvTlOHaNSxIotKF93mthQtTtPjOxRhLPI720BcJnv7M=",
   session: {
     strategy: 'jwt'
   },
