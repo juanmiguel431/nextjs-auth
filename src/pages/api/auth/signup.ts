@@ -40,13 +40,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     await client.insert({email: email, password: hashedPassword});
 
     res.status(201).json({message: 'Created user!'});
-
   } catch (error) {
     if (error instanceof MongoServerError) {
       console.log(`Error worth logging: ${error}`);
+      res.status(500).json({message: error.message});
     }
-
-    return null;
   } finally {
     await client.close();
   }
