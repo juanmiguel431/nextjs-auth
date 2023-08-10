@@ -50,9 +50,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   } catch (error) {
     if (error instanceof MongoServerError) {
       console.log(`Error worth logging: ${error}`);
+      res.status(500).json({ message: error.message });
+      return;
     }
-
-    return null;
   } finally {
     await client.close();
   }
