@@ -112,7 +112,7 @@ export const authOptions: NextAuthOptions = {
             throw Error('Could not log you in');
           }
 
-          return {email: user.email, username: user.email, password: user.password, id: user._id};
+          return {email: user.email, username: user.email, id: user._id};
 
         } catch (error) {
           if (error instanceof MongoServerError) {
