@@ -1,4 +1,4 @@
-import NextAuth, {NextAuthOptions} from "next-auth"
+import NextAuth, {Awaitable, NextAuthOptions} from "next-auth"
 // import GoogleProvider from "next-auth/providers/google"
 // import FacebookProvider from "next-auth/providers/facebook"
 // import GithubProvider from "next-auth/providers/github"
@@ -94,7 +94,7 @@ export const authOptions: NextAuthOptions = {
         //             return null
 
         if (!credentials) {
-          return null;
+          throw Error('You most provide the credentials.');
         }
 
         const client = new MongoDbClient<User>('users');
@@ -112,7 +112,9 @@ export const authOptions: NextAuthOptions = {
             throw Error('Could not log you in');
           }
 
-          return {email: user.email, username: user.email, id: user._id};
+          const result: Awaitable<User | null> = {email: user.email, id: user._id};
+
+          return result;
 
         } catch (error) {
           if (error instanceof MongoServerError) {
