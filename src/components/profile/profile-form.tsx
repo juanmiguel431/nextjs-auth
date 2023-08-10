@@ -25,7 +25,7 @@ const ProfileForm: React.FC<ProfileFormProps> = (props) => {
   }
 
   return (
-    <form className={classes.form} onSubmit={e => submitHandler}>
+    <form className={classes.form} onSubmit={submitHandler}>
       <div className={classes.control}>
         <label htmlFor='old-password'>Old Password</label>
         <input type='password' id='old-password' ref={oldPasswordRef} />
