@@ -103,13 +103,13 @@ export const authOptions: NextAuthOptions = {
           const user: any = await client.findOne({email: credentials.email});
 
           if (!user) {
-            return null;
+            throw Error('User not found');
           }
 
           const isValid = await verifyPassword(credentials.password, user.password);
 
           if (!isValid) {
-            return null;
+            throw Error('Could not log you in');
           }
 
           return {email: user.email, username: user.email, password: user.password, id: user._id};
@@ -119,7 +119,7 @@ export const authOptions: NextAuthOptions = {
             console.log(`Error worth logging: ${error}`);
           }
 
-          return null;
+          throw error;
         } finally {
           await client.close();
         }

@@ -94,7 +94,7 @@ const AuthForm: React.FC = () => {
           </button>
         </div>
       </form>
-      {isLoading && 'Loading'}
+      {isLoading && <p style={{color: 'white'}}>Loading...</p>}
     </section>
   );
 }
